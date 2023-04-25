@@ -192,12 +192,17 @@ namespace main_savitch_14{
 
     void Boop::check(){
         int count = 0;
+        int count2 = 0;
         int previous = 0;
-        bool valid;
+        bool valid = false;
+        bool valid2 = false;
         string upgrade;
-        string part1;
-        string part2;
-        string part3;
+        int currentRow2;
+        int currentColumn2;
+        string input;
+        string input2;
+        bool is3 = false;
+        bool is32 = false;
         
         for(int column = 0; column < 6; column++){
             previous = board[0][column].getTaken();
@@ -332,47 +337,47 @@ namespace main_savitch_14{
                 
             } // end of inner for loop
         } // end of outer for loop
-        /*
+        
         for(int row = 0; row < 6; row++){
             previous = board[row][0].getTaken();
             if(previous != 0){
-                count = 1;
+                count2 = 1;
             }
             else{
-                count = 0;
+                count2 = 0;
             }
             for(int s = 1; s < 6; s++){
                 switch(previous){
                     case 0:
                         previous = board[row][s].getTaken();
                         if(board[row][s].getTaken() != 0){
-                            count = 1;
+                            count2 = 1;
                         }
                         else{
-                            count = 0;
+                            count2 = 0;
                         }
                         break;
                     case 1:
                         previous = board[row][s].getTaken();
                         switch(previous){
                             case 0:
-                                count = 0;
+                                count2 = 0;
                                 break;
 
                             case 1:
-                                count++;
+                                count2++;
                                 break;
 
                             case 2:
-                                count++;
+                                count2++;
                                 break;
 
                             case 3:
-                                count = 1;
+                                count2 = 1;
                                 break;
 
                             case 4:
-                                count = 1;
+                                count2 = 1;
                                 break;
 
                         }
@@ -382,23 +387,23 @@ namespace main_savitch_14{
                     previous = board[row][s].getTaken();
                         switch(previous){
                             case 0:
-                                count = 0;
+                                count2 = 0;
                                 break;
 
                             case 1:
-                                count++;
+                                count2++;
                                 break;
 
                             case 2:
-                                count++;
+                                count2++;
                                 break;
 
                             case 3:
-                                count = 1;
+                                count2 = 1;
                                 break;
 
                             case 4:
-                                count = 1;
+                                count2 = 1;
                                 break;
 
                         }
@@ -408,23 +413,23 @@ namespace main_savitch_14{
                         previous = board[row][s].getTaken();
                         switch(previous){
                             case 0:
-                                count = 0;
+                                count2 = 0;
                                 break;
 
                             case 1:
-                                count = 1;
+                                count2 = 1;
                                 break;
 
                             case 2:
-                                count = 1;
+                                count2 = 1;
                                 break;
 
                             case 3:
-                                count++;
+                                count2++;
                                 break;
 
                             case 4:
-                                count++;
+                                count2++;
                                 break;
 
                         }
@@ -434,36 +439,55 @@ namespace main_savitch_14{
                         previous = board[row][s].getTaken();
                         switch(previous){
                             case 0:
-                                count = 0;
+                                count2 = 0;
                                 break;
 
                             case 1:
-                                count = 1;
+                                count2 = 1;
                                 break;
 
                             case 2:
-                                count = 1;
+                                count2 = 1;
                                 break;
 
                             case 3:
-                                count++;
+                                count2++;
                                 break;
 
                             case 4:
-                                count++;
+                                count2++;
                                 break;
 
                         }
                         break;
 
                 } 
-                            if(count == 3){
-                    cout << "this" << endl;
+                if(count2 == 3){
+                    cout << "this2" << endl;
+                    currentColumn2 = s;
+                    currentRow2 = row;
+                    is32 = true;
                 }
+                
 
             }// end of for loop
         }
-        */
+
+        if(is32 == true){
+            display_status();
+            do{
+                cout << "Enter the 3 pieces you would like to remove in order from LEFT to RIGHT, ex: "<< endl <<
+                "1a 2a 3a" << endl << endl;
+                getline(cin, input2);
+                if(input2.length() == 8){
+                    if(int(input2[0] - '1') == currentColumn2 - 2 && int(toupper(input2[1]) - 'A') == currentRow2 && input2[2] == ' ' &&
+                    int(input2[3] - '1') == currentColumn2 - 1 && int(toupper(input2[4]) - 'A') == currentRow2 && input2[5] == ' ' &&
+                    int(input2[6] - '1') == currentColumn2 && int(toupper(input2[7]) - 'A') == currentRow2){
+                        valid2 = true;
+                    }
+                }
+            }while(valid2 != true);
+        }
 
     } // end of function
 
