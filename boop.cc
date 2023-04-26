@@ -23,8 +23,8 @@ namespace main_savitch_14{
         p1Kittens = 8; // all players start with 8 kittens
         p2Kittens = 8;
 
-        p1Cats = 0; // players start with 0 cats
-        p2Cats = 0;
+        p1Cats = 5; // players start with 0 cats
+        p2Cats = 5;
 
         game::restart(); // no moves have been made
     }
@@ -182,6 +182,11 @@ namespace main_savitch_14{
             }
         }
 
+        if(is_game_over()){
+            cout << "The game is over!" << endl;
+            return;
+        }
+
         check();
 
         game::make_move(move);
@@ -193,18 +198,24 @@ namespace main_savitch_14{
     void Boop::check(){
         int count = 0;
         int count2 = 0;
+        int count3 = 0;
+        int count4 = 0;
+        int count5 = 0;
+        int count6 = 0;
         int previous = 0;
         bool valid = false;
         bool valid2 = false;
         string upgrade;
         int currentRow2;
         int currentColumn2;
+        int currentRow;
+        int currentColumn;
         string input;
         string input2;
         bool is3 = false;
         bool is32 = false;
         
-        for(int column = 0; column < 6; column++){
+        for(int column = 0; column < 6; column++){ // CHECKS COLUMNS
             previous = board[0][column].getTaken();
             if(previous != 0){
                 count = 1;
@@ -327,18 +338,18 @@ namespace main_savitch_14{
                         }
                         break;
                 }
-
-
-
                 
-                                        if(count == 3){
-                    cout << "this" << endl;
-                                        }
+                if(count == 3){
+                    cout << "this2" << endl;
+                    currentColumn = column;
+                    currentRow = s;
+                    is3 = true;
+                }
                 
             } // end of inner for loop
         } // end of outer for loop
         
-        for(int row = 0; row < 6; row++){
+        for(int row = 0; row < 6; row++){ // CHECKS ROWS
             previous = board[row][0].getTaken();
             if(previous != 0){
                 count2 = 1;
@@ -473,6 +484,592 @@ namespace main_savitch_14{
             }// end of for loop
         }
 
+        // CHECKS DIAGONALS
+
+        int t = 5;
+        int row;
+        int col;
+        for(int i = 0; i < 6; i++){
+            row = i;
+            col = 0;
+            previous = board[row][col].getTaken();
+            cout << "[" << row << ", " << col << "]" << endl;
+            if(previous != 0){
+                count3 = 1;
+            }
+            else{
+                count3 = 0;
+            }
+            for(int j = 0; j < t; j++){
+                
+                switch(previous){
+                    case 0:
+                        previous = board[row + 1][col + 1].getTaken();
+                        if(board[row + 1][col + 1].getTaken() != 0){
+                            count3 = 1;
+                        }
+                        else{
+                            count3 = 0;
+                        }
+                        break;
+                    case 1:
+                        previous = board[row + 1][col + 1].getTaken();
+                        switch(previous){
+                            case 0:
+                                count3 = 0;
+                                break;
+
+                            case 1:
+                                count3++;
+                                break;
+
+                            case 2:
+                                count3++;
+                                break;
+
+                            case 3:
+                                count3 = 1;
+                                break;
+
+                            case 4:
+                                count3 = 1;
+                                break;
+
+                        }
+                        break;
+
+                    case 2:
+                    previous = board[row + 1][col + 1].getTaken();
+                        switch(previous){
+                            case 0:
+                                count3 = 0;
+                                break;
+
+                            case 1:
+                                count3++;
+                                break;
+
+                            case 2:
+                                count3++;
+                                break;
+
+                            case 3:
+                                count3 = 1;
+                                break;
+
+                            case 4:
+                                count3 = 1;
+                                break;
+
+                        }
+                        break;
+
+                    case 3:
+                        previous = board[row + 1][col + 1].getTaken();
+                        switch(previous){
+                            case 0:
+                                count3 = 0;
+                                break;
+
+                            case 1:
+                                count3 = 1;
+                                break;
+
+                            case 2:
+                                count3 = 1;
+                                break;
+
+                            case 3:
+                                count3++;
+                                break;
+
+                            case 4:
+                                count3++;
+                                break;
+
+                        }
+                        break;
+                    
+                    case 4:
+                        previous = board[row + 1][col + 1].getTaken();
+                        switch(previous){
+                            case 0:
+                                count3 = 0;
+                                break;
+
+                            case 1:
+                                count3 = 1;
+                                break;
+
+                            case 2:
+                                count3 = 1;
+                                break;
+
+                            case 3:
+                                count3++;
+                                break;
+
+                            case 4:
+                                count3++;
+                                break;
+
+                        }
+                        break;
+
+                } 
+
+                if(count3 == 3){
+                    cout << "DIAGONAL YAY!" << endl;
+                }
+                row++;
+                col++;
+            }
+            t--;
+            previous = 0;
+        }
+
+        t = 4;
+        for(int i = 1; i < 6; i++){
+            row = 0;
+            col = i;
+            previous = board[row][col].getTaken();
+            cout << "[" << row << ", " << col << "]" << endl;
+            if(previous != 0){
+                count4 = 1;
+            }
+            else{
+                count4 = 0;
+            }
+            for(int j = 0; j < t; j++){
+                cout << "[" << row + 1 << ", " << col + 1 << "]" << endl;
+                switch(previous){
+                    case 0:
+                        previous = board[row + 1][col + 1].getTaken();
+                        if(board[row + 1][col + 1].getTaken() != 0){
+                            count4 = 1;
+                        }
+                        else{
+                            count4 = 0;
+                        }
+                        break;
+                    case 1:
+                        previous = board[row + 1][col + 1].getTaken();
+                        switch(previous){
+                            case 0:
+                                count4 = 0;
+                                break;
+
+                            case 1:
+                                count4++;
+                                break;
+
+                            case 2:
+                                count4++;
+                                break;
+
+                            case 3:
+                                count4 = 1;
+                                break;
+
+                            case 4:
+                                count4 = 1;
+                                break;
+
+                        }
+                        break;
+
+                    case 2:
+                    previous = board[row + 1][col + 1].getTaken();
+                        switch(previous){
+                            case 0:
+                                count4 = 0;
+                                break;
+
+                            case 1:
+                                count4++;
+                                break;
+
+                            case 2:
+                                count4++;
+                                break;
+
+                            case 3:
+                                count4 = 1;
+                                break;
+
+                            case 4:
+                                count4 = 1;
+                                break;
+
+                        }
+                        break;
+
+                    case 3:
+                        previous = board[row + 1][col + 1].getTaken();
+                        switch(previous){
+                            case 0:
+                                count4 = 0;
+                                break;
+
+                            case 1:
+                                count4 = 1;
+                                break;
+
+                            case 2:
+                                count4 = 1;
+                                break;
+
+                            case 3:
+                                count4++;
+                                break;
+
+                            case 4:
+                                count4++;
+                                break;
+
+                        }
+                        break;
+                    
+                    case 4:
+                        previous = board[row + 1][col + 1].getTaken();
+                        switch(previous){
+                            case 0:
+                                count4 = 0;
+                                break;
+
+                            case 1:
+                                count4 = 1;
+                                break;
+
+                            case 2:
+                                count4 = 1;
+                                break;
+
+                            case 3:
+                                count4++;
+                                break;
+
+                            case 4:
+                                count4++;
+                                break;
+
+                        }
+                        break;
+
+                } 
+
+                if(count4 == 3){
+                    cout << "DIAGONAL YAY! right side" << endl;
+                }
+                row++;
+                col++;
+            }
+            t--;
+            previous = 0;
+        }
+
+
+        // CHECKING THE OTHER WAY DIAGONALLY (please kill me lol ik there's a better way to do this)
+        
+
+        t = 5;
+        for(int i = 5; i >= 0; i--){
+            row = i;
+            col = 0;
+            previous = board[row][col].getTaken();
+            cout << "[" << row << ", " << col << "]" << endl;
+            if(previous != 0){
+                count5 = 1;
+            }
+            else{
+                count5 = 0;
+            }
+            for(int j = 0; j < t; j++){
+                cout << "[" << row - 1 << ", " << col + 1 << "]" << endl;
+                switch(previous){
+                    case 0:
+                        previous = board[row - 1][col + 1].getTaken();
+                        if(board[row - 1][col + 1].getTaken() != 0){
+                            count5 = 1;
+                        }
+                        else{
+                            count5 = 0;
+                        }
+                        break;
+                    case 1:
+                        previous = board[row - 1][col + 1].getTaken();
+                        switch(previous){
+                            case 0:
+                                count5 = 0;
+                                break;
+
+                            case 1:
+                                count5++;
+                                break;
+
+                            case 2:
+                                count5++;
+                                break;
+
+                            case 3:
+                                count5 = 1;
+                                break;
+
+                            case 4:
+                                count5 = 1;
+                                break;
+
+                        }
+                        break;
+
+                    case 2:
+                    previous = board[row - 1][col + 1].getTaken();
+                        switch(previous){
+                            case 0:
+                                count5 = 0;
+                                break;
+
+                            case 1:
+                                count5++;
+                                break;
+
+                            case 2:
+                                count5++;
+                                break;
+
+                            case 3:
+                                count5 = 1;
+                                break;
+
+                            case 4:
+                                count5 = 1;
+                                break;
+
+                        }
+                        break;
+
+                    case 3:
+                        previous = board[row - 1][col + 1].getTaken();
+                        switch(previous){
+                            case 0:
+                                count5 = 0;
+                                break;
+
+                            case 1:
+                                count5 = 1;
+                                break;
+
+                            case 2:
+                                count5 = 1;
+                                break;
+
+                            case 3:
+                                count5++;
+                                break;
+
+                            case 4:
+                                count5++;
+                                break;
+
+                        }
+                        break;
+                    
+                    case 4:
+                        previous = board[row - 1][col + 1].getTaken();
+                        switch(previous){
+                            case 0:
+                                count5 = 0;
+                                break;
+
+                            case 1:
+                                count5 = 1;
+                                break;
+
+                            case 2:
+                                count5 = 1;
+                                break;
+
+                            case 3:
+                                count5++;
+                                break;
+
+                            case 4:
+                                count5++;
+                                break;
+
+                        }
+                        break;
+                }
+
+                if(count5 == 3){
+                    cout << "DIAGONAL YAY! right side" << endl;
+                }
+                row--;
+                col++;
+            }
+            t--;
+            previous = 0;
+        }
+
+
+
+        t = 4;
+        for(int i = 1; i < 6; i++){
+            row = i;
+            col = 5;
+            previous = board[row][col].getTaken();
+            cout << "[" << row << ", " << col << "]" << endl;
+            if(previous != 0){
+                count6 = 1;
+            }
+            else{
+                count6 = 0;
+            }
+            for(int j = 0; j < t; j++){
+                cout << "[" << row + 1 << ", " << col - 1 << "]" << endl;
+                switch(previous){
+                    case 0:
+                        previous = board[row + 1][col - 1].getTaken();
+                        if(board[row - 1][col + 1].getTaken() != 0){
+                            count6 = 1;
+                        }
+                        else{
+                            count6 = 0;
+                        }
+                        break;
+                    case 1:
+                        previous = board[row + 1][col - 1].getTaken();
+                        switch(previous){
+                            case 0:
+                                count6 = 0;
+                                break;
+
+                            case 1:
+                                count6++;
+                                break;
+
+                            case 2:
+                                count6++;
+                                break;
+
+                            case 3:
+                                count6 = 1;
+                                break;
+
+                            case 4:
+                                count6 = 1;
+                                break;
+
+                        }
+                        break;
+
+                    case 2:
+                    previous = board[row + 1][col - 1].getTaken();
+                        switch(previous){
+                            case 0:
+                                count6 = 0;
+                                break;
+
+                            case 1:
+                                count6++;
+                                break;
+
+                            case 2:
+                                count6++;
+                                break;
+
+                            case 3:
+                                count6 = 1;
+                                break;
+
+                            case 4:
+                                count6 = 1;
+                                break;
+
+                        }
+                        break;
+
+                    case 3:
+                        previous = board[row + 1][col - 1].getTaken();
+                        switch(previous){
+                            case 0:
+                                count6 = 0;
+                                break;
+
+                            case 1:
+                                count6 = 1;
+                                break;
+
+                            case 2:
+                                count6 = 1;
+                                break;
+
+                            case 3:
+                                count6++;
+                                break;
+
+                            case 4:
+                                count6++;
+                                break;
+
+                        }
+                        break;
+                    
+                    case 4:
+                        previous = board[row + 1][col - 1].getTaken();
+                        switch(previous){
+                            case 0:
+                                count6 = 0;
+                                break;
+
+                            case 1:
+                                count6 = 1;
+                                break;
+
+                            case 2:
+                                count6 = 1;
+                                break;
+
+                            case 3:
+                                count6++;
+                                break;
+
+                            case 4:
+                                count6++;
+                                break;
+
+                        }
+                        break;
+                }
+
+                if(count6 == 3){
+                    cout << "DIAGONAL YAY! right side" << endl;
+                }
+                row++;
+                col--;
+            }
+            t--;
+            previous = 0;
+        }
+
+
+
+        if(is3 == true){
+            display_status();
+            do{
+                cout << "Enter the 3 pieces you would like to remove in order from TOP to BOTTOM, ex: "<< endl <<
+                "1a 1b 1c" << endl << endl;
+                getline(cin, input);
+                if(input.length() == 8){
+                    if(int(input[0] - '1') == currentColumn && int(toupper(input[1]) - 'A') == currentRow - 2 && input[2] == ' ' &&
+                    int(input[3] - '1') == currentColumn && int(toupper(input[4]) - 'A') == currentRow - 1 && input[5] == ' ' &&
+                    int(input[6] - '1') == currentColumn && int(toupper(input[7]) - 'A') == currentRow){
+                        valid = true;
+                    }
+                }
+            }while(valid != true);
+        }
+
         if(is32 == true){
             display_status();
             do{
@@ -489,6 +1086,166 @@ namespace main_savitch_14{
             }while(valid2 != true);
         }
 
+        if(is3 == true || is32 == true){
+            do{
+                cout << "Enter the 3 pieces you would like to remove in order from LEFT to RIGHT, ex: "<< endl <<
+                "1a 2a 3a" << endl << endl;
+                getline(cin, input2);
+                if(input2.length() == 8){
+                    if(int(input2[0] - '1') == currentColumn2 - 2 && int(toupper(input2[1]) - 'A') == currentRow2 && input2[2] == ' ' &&
+                    int(input2[3] - '1') == currentColumn2 - 1 && int(toupper(input2[4]) - 'A') == currentRow2 && input2[5] == ' ' &&
+                    int(input2[6] - '1') == currentColumn2 && int(toupper(input2[7]) - 'A') == currentRow2){
+                        valid2 = true;
+                    }
+                }
+            }while(valid2 != true);
+        }
+
     } // end of function
+
+    bool Boop::is_game_over() const{
+
+        int count = 0;
+        int count2 = 0;
+        int previous = 0;
+        bool is3 = false;
+        bool is32 = false;
+        
+        for(int column = 0; column < 6; column++){
+            previous = board[0][column].getTaken();
+            if(previous != 0){
+                count = 1;
+            }
+            else{
+                count = 0;
+            }
+            for(int s = 1; s < 6; s++){
+                switch(previous){
+
+                    case 2:
+                        previous = board[s][column].getTaken();
+                        switch(previous){
+                            case 2:
+                                count++;
+                                break;
+
+                            case 4:
+                                count = 1;
+                                break;
+
+                            default:
+                                count = 0;
+                                break;      
+
+                        }
+                        break;
+                    
+                    case 4:
+                        previous = board[s][column].getTaken();
+                        switch(previous){
+
+                            case 2:
+                                count = 1;
+                                break;
+
+                            case 4:
+                                count++;
+                                break;
+
+                            default:
+                                count = 0;
+                                break;
+
+                        }
+                        break;
+
+                    default:
+                        previous = board[s][column].getTaken();
+                        if(board[s][column].getTaken() != 0){
+                            count = 1;
+                        }
+                        else{
+                            count = 0;
+                        }
+                        break;
+                }
+                
+                if(count == 3){
+                    cout << "THE CATS" << endl;
+                    return true;
+                }
+                
+            } // end of inner for loop
+        } // end of outer for loop
+        
+        for(int row = 0; row < 6; row++){
+            previous = board[row][0].getTaken();
+            if(previous == 2 || previous == 4){
+                count2 = 1;
+            }
+            else{
+                count2 = 0;
+            }
+            for(int s = 1; s < 6; s++){
+                switch(previous){
+                    case 2:
+                        previous = board[row][s].getTaken();
+                        switch(previous){
+
+                            case 2:
+                                count2++;
+                                break;
+
+                            case 4:
+                                count2 = 1;
+                                break;
+
+                            default:
+                                count2 = 0;
+                                break;
+
+                        }
+                        break;
+                    
+                    case 4:
+                        previous = board[row][s].getTaken();
+                        switch(previous){
+
+                            case 2:
+                                count2 = 1;
+                                break;
+
+                            case 4:
+                                count2++;
+                                break;
+
+                            default:
+                                count2 = 0;
+                                break;
+
+                        }
+                        break;
+                    
+                    default:
+                        previous = board[row][s].getTaken();
+                        if(board[row][s].getTaken() != 0){
+                            count2 = 1;
+                        }
+                        else{
+                            count2 = 0;
+                        }
+                        break;
+
+                } 
+                if(count2 == 3){
+                    cout << "THE CATS" << endl;
+                    return true;
+                }
+                
+
+            }// end of for loop
+        }
+
+    }
 
 }

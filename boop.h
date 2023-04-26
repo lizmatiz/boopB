@@ -55,7 +55,7 @@ namespace main_savitch_14{
                 game* clone( ) const {}
                 void compute_moves(std::queue<std::string>& moves) const {}
                 int evaluate( ) const {}
-                bool is_game_over( ) const {}
+                bool is_game_over( ) const;
 
                 void check();
 
