@@ -59,6 +59,8 @@ namespace main_savitch_14{
 
                 void check();
 
+                void boopThePieces();
+
                 
 
             protected:

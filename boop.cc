@@ -203,17 +203,14 @@ namespace main_savitch_14{
         int count5 = 0;
         int count6 = 0;
         int previous = 0;
-        bool valid = false;
-        bool valid2 = false;
-        string upgrade;
-        int currentRow2;
-        int currentColumn2;
-        int currentRow;
-        int currentColumn;
         string input;
-        string input2;
-        bool is3 = false;
-        bool is32 = false;
+        bool isColumn = false;
+        bool isRow = false;
+        bool isDiagonal = false;
+        bool isDiagonal2 = false;
+        bool isDiagonal3 = false;
+        bool isDiagonal4 = false;
+        bool valid = false;
         
         for(int column = 0; column < 6; column++){ // CHECKS COLUMNS
             previous = board[0][column].getTaken();
@@ -340,10 +337,7 @@ namespace main_savitch_14{
                 }
                 
                 if(count == 3){
-                    cout << "this2" << endl;
-                    currentColumn = column;
-                    currentRow = s;
-                    is3 = true;
+                    isColumn = true;
                 }
                 
             } // end of inner for loop
@@ -474,10 +468,7 @@ namespace main_savitch_14{
 
                 } 
                 if(count2 == 3){
-                    cout << "this2" << endl;
-                    currentColumn2 = s;
-                    currentRow2 = row;
-                    is32 = true;
+                    isRow = true;
                 }
                 
 
@@ -486,6 +477,7 @@ namespace main_savitch_14{
 
         // CHECKS DIAGONALS
 
+        // checking diagonals (*\)
         int t = 5;
         int row;
         int col;
@@ -493,7 +485,6 @@ namespace main_savitch_14{
             row = i;
             col = 0;
             previous = board[row][col].getTaken();
-            cout << "[" << row << ", " << col << "]" << endl;
             if(previous != 0){
                 count3 = 1;
             }
@@ -619,7 +610,7 @@ namespace main_savitch_14{
                 } 
 
                 if(count3 == 3){
-                    cout << "DIAGONAL YAY!" << endl;
+                    isDiagonal = true;
                 }
                 row++;
                 col++;
@@ -628,12 +619,12 @@ namespace main_savitch_14{
             previous = 0;
         }
 
+        // checking diagonals (\*)
         t = 4;
         for(int i = 1; i < 6; i++){
             row = 0;
             col = i;
             previous = board[row][col].getTaken();
-            cout << "[" << row << ", " << col << "]" << endl;
             if(previous != 0){
                 count4 = 1;
             }
@@ -641,7 +632,6 @@ namespace main_savitch_14{
                 count4 = 0;
             }
             for(int j = 0; j < t; j++){
-                cout << "[" << row + 1 << ", " << col + 1 << "]" << endl;
                 switch(previous){
                     case 0:
                         previous = board[row + 1][col + 1].getTaken();
@@ -759,7 +749,7 @@ namespace main_savitch_14{
                 } 
 
                 if(count4 == 3){
-                    cout << "DIAGONAL YAY! right side" << endl;
+                    isDiagonal2 = true;
                 }
                 row++;
                 col++;
@@ -771,13 +761,12 @@ namespace main_savitch_14{
 
         // CHECKING THE OTHER WAY DIAGONALLY (please kill me lol ik there's a better way to do this)
         
-
+        // checking diagonals (*/)
         t = 5;
         for(int i = 5; i >= 0; i--){
             row = i;
             col = 0;
             previous = board[row][col].getTaken();
-            cout << "[" << row << ", " << col << "]" << endl;
             if(previous != 0){
                 count5 = 1;
             }
@@ -785,7 +774,6 @@ namespace main_savitch_14{
                 count5 = 0;
             }
             for(int j = 0; j < t; j++){
-                cout << "[" << row - 1 << ", " << col + 1 << "]" << endl;
                 switch(previous){
                     case 0:
                         previous = board[row - 1][col + 1].getTaken();
@@ -902,7 +890,7 @@ namespace main_savitch_14{
                 }
 
                 if(count5 == 3){
-                    cout << "DIAGONAL YAY! right side" << endl;
+                    isDiagonal3 = true;
                 }
                 row--;
                 col++;
@@ -912,13 +900,12 @@ namespace main_savitch_14{
         }
 
 
-
+        // checking diagonals (/*)
         t = 4;
         for(int i = 1; i < 6; i++){
             row = i;
             col = 5;
             previous = board[row][col].getTaken();
-            cout << "[" << row << ", " << col << "]" << endl;
             if(previous != 0){
                 count6 = 1;
             }
@@ -926,7 +913,6 @@ namespace main_savitch_14{
                 count6 = 0;
             }
             for(int j = 0; j < t; j++){
-                cout << "[" << row + 1 << ", " << col - 1 << "]" << endl;
                 switch(previous){
                     case 0:
                         previous = board[row + 1][col - 1].getTaken();
@@ -1043,7 +1029,7 @@ namespace main_savitch_14{
                 }
 
                 if(count6 == 3){
-                    cout << "DIAGONAL YAY! right side" << endl;
+                    isDiagonal4 = true;
                 }
                 row++;
                 col--;
@@ -1052,53 +1038,111 @@ namespace main_savitch_14{
             previous = 0;
         }
 
-
-
-        if(is3 == true){
-            display_status();
+        int firstNum;
+        int secondNum;
+        int thirdNum;
+        int firstChar;
+        int secondChar;
+        int thirdChar;
+        if(isColumn == true || isRow == true || isDiagonal == true || isDiagonal2 == true || isDiagonal3 == true || isDiagonal4 == true){
             do{
-                cout << "Enter the 3 pieces you would like to remove in order from TOP to BOTTOM, ex: "<< endl <<
-                "1a 1b 1c" << endl << endl;
+                display_status();
+                cout << "Please enter the pieces you would like to remove in order from TOP to BOTTOM or LEFT to RIGHT, ex:" << endl << endl << 
+                "1a 1b 1c" << endl << endl << "or" << endl << endl << "1a 2a 3a" << endl << endl << "or" << endl << endl << "1a 2b 3c" << endl << endl;
                 getline(cin, input);
                 if(input.length() == 8){
-                    if(int(input[0] - '1') == currentColumn && int(toupper(input[1]) - 'A') == currentRow - 2 && input[2] == ' ' &&
-                    int(input[3] - '1') == currentColumn && int(toupper(input[4]) - 'A') == currentRow - 1 && input[5] == ' ' &&
-                    int(input[6] - '1') == currentColumn && int(toupper(input[7]) - 'A') == currentRow){
-                        valid = true;
+                    firstNum = int(input[0] - '1');
+                    firstChar = int(toupper(input[1]) - 'A');
+                    secondNum = int(input[3] - '1');
+                    secondChar = int(toupper(input[4]) - 'A');
+                    thirdNum = int(input[6] - '1');
+                    thirdChar = int(toupper(input[7]) - 'A');
+                    if(isColumn == true){
+                        if((firstNum == secondNum && secondNum == thirdNum)){
+                            if((firstChar == secondChar - 1) && (secondChar = thirdChar - 1)){
+                                // need to adjust to check all spaces
+                                if((((board[firstChar][firstNum].getTaken() == 1 || board[firstChar][firstNum].getTaken() == 2) &&
+                                (board[secondChar][secondNum].getTaken() == 1 || board[secondChar][secondNum].getTaken() == 2) &&
+                                (board[thirdChar][thirdNum].getTaken() == 1 || board[thirdChar][thirdNum].getTaken() == 2)) &&
+                                next_mover() == HUMAN) ||
+
+                                (((board[firstChar][firstNum].getTaken() == 3 || board[firstChar][firstNum].getTaken() == 4) &&
+                                (board[secondChar][secondNum].getTaken() == 3 || board[secondChar][secondNum].getTaken() == 4) &&
+                                (board[thirdChar][thirdNum].getTaken() == 3 || board[thirdChar][thirdNum].getTaken() == 4)) &&
+                                next_mover() == COMPUTER)){
+                                    valid = true;
+                                }
+                            }
+                        }
+                    }
+                    if(isRow == true){
+                        if((firstChar == secondChar && secondChar == thirdChar)){
+                            if((firstNum == secondNum - 1) && (secondNum = thirdNum - 1)){
+                                if((((board[firstChar][firstNum].getTaken() == 1 || board[firstChar][firstNum].getTaken() == 2) &&
+                                (board[secondChar][secondNum].getTaken() == 1 || board[secondChar][secondNum].getTaken() == 2) &&
+                                (board[thirdChar][thirdNum].getTaken() == 1 || board[thirdChar][thirdNum].getTaken() == 2)) &&
+                                next_mover() == HUMAN) ||
+
+                                (((board[firstChar][firstNum].getTaken() == 3 || board[firstChar][firstNum].getTaken() == 4) &&
+                                (board[secondChar][secondNum].getTaken() == 3 || board[secondChar][secondNum].getTaken() == 4) &&
+                                (board[thirdChar][thirdNum].getTaken() == 3 || board[thirdChar][thirdNum].getTaken() == 4)) &&
+                                next_mover() == COMPUTER)){
+                                    valid = true;
+                                }
+                            }
+                        } 
+                    }
+                    if(isDiagonal == true || isDiagonal2 == true){
+                        if((firstChar == secondChar - 1) && (secondChar = thirdChar - 1)){
+                            if((firstNum == secondNum - 1) && (secondNum = thirdNum - 1)){
+                                if((((board[firstChar][firstNum].getTaken() == 1 || board[firstChar][firstNum].getTaken() == 2) &&
+                                (board[secondChar][secondNum].getTaken() == 1 || board[secondChar][secondNum].getTaken() == 2) &&
+                                (board[thirdChar][thirdNum].getTaken() == 1 || board[thirdChar][thirdNum].getTaken() == 2)) &&
+                                next_mover() == HUMAN) ||
+
+                                (((board[firstChar][firstNum].getTaken() == 3 || board[firstChar][firstNum].getTaken() == 4) &&
+                                (board[secondChar][secondNum].getTaken() == 3 || board[secondChar][secondNum].getTaken() == 4) &&
+                                (board[thirdChar][thirdNum].getTaken() == 3 || board[thirdChar][thirdNum].getTaken() == 4)) &&
+                                next_mover() == COMPUTER)){
+                                    valid = true;
+                                }
+                            }
+                        } 
+                    }
+                    if(isDiagonal3 == true || isDiagonal4 == true){
+                        if((firstChar == secondChar + 1) && (secondChar = thirdChar + 1)){
+                            if((firstNum == secondNum - 1) && (secondNum = thirdNum - 1)){
+                                if((((board[firstChar][firstNum].getTaken() == 1 || board[firstChar][firstNum].getTaken() == 2) &&
+                                (board[secondChar][secondNum].getTaken() == 1 || board[secondChar][secondNum].getTaken() == 2) &&
+                                (board[thirdChar][thirdNum].getTaken() == 1 || board[thirdChar][thirdNum].getTaken() == 2)) &&
+                                next_mover() == HUMAN) ||
+
+                                (((board[firstChar][firstNum].getTaken() == 3 || board[firstChar][firstNum].getTaken() == 4) &&
+                                (board[secondChar][secondNum].getTaken() == 3 || board[secondChar][secondNum].getTaken() == 4) &&
+                                (board[thirdChar][thirdNum].getTaken() == 3 || board[thirdChar][thirdNum].getTaken() == 4)) &&
+                                next_mover() == COMPUTER)){
+                                    valid = true;
+                                }
+                            }
+                        } 
                     }
                 }
             }while(valid != true);
         }
 
-        if(is32 == true){
-            display_status();
-            do{
-                cout << "Enter the 3 pieces you would like to remove in order from LEFT to RIGHT, ex: "<< endl <<
-                "1a 2a 3a" << endl << endl;
-                getline(cin, input2);
-                if(input2.length() == 8){
-                    if(int(input2[0] - '1') == currentColumn2 - 2 && int(toupper(input2[1]) - 'A') == currentRow2 && input2[2] == ' ' &&
-                    int(input2[3] - '1') == currentColumn2 - 1 && int(toupper(input2[4]) - 'A') == currentRow2 && input2[5] == ' ' &&
-                    int(input2[6] - '1') == currentColumn2 && int(toupper(input2[7]) - 'A') == currentRow2){
-                        valid2 = true;
-                    }
-                }
-            }while(valid2 != true);
-        }
-
-        if(is3 == true || is32 == true){
-            do{
-                cout << "Enter the 3 pieces you would like to remove in order from LEFT to RIGHT, ex: "<< endl <<
-                "1a 2a 3a" << endl << endl;
-                getline(cin, input2);
-                if(input2.length() == 8){
-                    if(int(input2[0] - '1') == currentColumn2 - 2 && int(toupper(input2[1]) - 'A') == currentRow2 && input2[2] == ' ' &&
-                    int(input2[3] - '1') == currentColumn2 - 1 && int(toupper(input2[4]) - 'A') == currentRow2 && input2[5] == ' ' &&
-                    int(input2[6] - '1') == currentColumn2 && int(toupper(input2[7]) - 'A') == currentRow2){
-                        valid2 = true;
-                    }
-                }
-            }while(valid2 != true);
+        if(valid == true){
+            board[firstChar][firstNum].setTaken(0);
+            board[firstChar][firstNum].setSpace("       ", "       ", "       ");
+            board[secondChar][secondNum].setTaken(0);
+            board[secondChar][secondNum].setSpace("       ", "       ", "       ");
+            board[thirdChar][thirdNum].setTaken(0);
+            board[thirdChar][thirdNum].setSpace("       ", "       ", "       ");
+            if(next_mover() == HUMAN){
+                p1Cats += 3;
+            }
+            else{
+                p2Cats += 3;
+            }
         }
 
     } // end of function
@@ -1246,6 +1290,10 @@ namespace main_savitch_14{
             }// end of for loop
         }
 
+    }
+
+    void Boop::boopThePieces(){
+        
     }
 
 }
