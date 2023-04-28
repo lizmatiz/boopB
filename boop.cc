@@ -26,6 +26,13 @@ namespace main_savitch_14{
         p1Cats = 5; // players start with 0 cats
         p2Cats = 5;
 
+        columnPerson = NEUTRAL;
+        rowPerson = NEUTRAL;
+        diagonalPerson = NEUTRAL;
+        diagonalPerson2 = NEUTRAL;
+        diagonalPerson3 = NEUTRAL;
+        diagonalPerson4 = NEUTRAL;
+
         game::restart(); // no moves have been made
     }
 
@@ -182,17 +189,26 @@ namespace main_savitch_14{
             }
         }
 
-        if(is_game_over()){
-            cout << "The game is over!" << endl;
+        //boopThePieces(rowNum, columnNum);
+
+        if(is_game_over() == true){
+            cout << "game over" << endl;
             return;
         }
+
+        boopThePieces(rowNum, columnNum);
 
         check();
 
         game::make_move(move);
 
+
         
 
+    }
+
+    int Boop::evaluate( ) const{
+        
     }
 
     void Boop::check(){
@@ -204,13 +220,13 @@ namespace main_savitch_14{
         int count6 = 0;
         int previous = 0;
         string input;
+        bool valid = false;
         bool isColumn = false;
         bool isRow = false;
         bool isDiagonal = false;
         bool isDiagonal2 = false;
         bool isDiagonal3 = false;
         bool isDiagonal4 = false;
-        bool valid = false;
         
         for(int column = 0; column < 6; column++){ // CHECKS COLUMNS
             previous = board[0][column].getTaken();
@@ -338,6 +354,12 @@ namespace main_savitch_14{
                 
                 if(count == 3){
                     isColumn = true;
+                    if(previous == 1 || previous == 2){
+                        columnPerson = HUMAN;
+                    }
+                    if(previous == 3 || previous == 4){
+                        columnPerson = COMPUTER;
+                    }
                 }
                 
             } // end of inner for loop
@@ -469,6 +491,12 @@ namespace main_savitch_14{
                 } 
                 if(count2 == 3){
                     isRow = true;
+                    if(previous == 1 || previous == 2){
+                        rowPerson = HUMAN;
+                    }
+                    if(previous == 3 || previous == 4){
+                        rowPerson = COMPUTER;
+                    }
                 }
                 
 
@@ -611,6 +639,12 @@ namespace main_savitch_14{
 
                 if(count3 == 3){
                     isDiagonal = true;
+                    if(previous == 1 || previous == 2){
+                        diagonalPerson = HUMAN;
+                    }
+                    if(previous == 3 || previous == 4){
+                        diagonalPerson = COMPUTER;
+                    }
                 }
                 row++;
                 col++;
@@ -750,6 +784,12 @@ namespace main_savitch_14{
 
                 if(count4 == 3){
                     isDiagonal2 = true;
+                    if(previous == 1 || previous == 2){
+                        diagonalPerson2 = HUMAN;
+                    }
+                    if(previous == 3 || previous == 4){
+                        diagonalPerson2 = COMPUTER;
+                    }
                 }
                 row++;
                 col++;
@@ -891,6 +931,12 @@ namespace main_savitch_14{
 
                 if(count5 == 3){
                     isDiagonal3 = true;
+                    if(previous == 1 || previous == 2){
+                        diagonalPerson3 = HUMAN;
+                    }
+                    if(previous == 3 || previous == 4){
+                        diagonalPerson3 = COMPUTER;
+                    }
                 }
                 row--;
                 col++;
@@ -1030,6 +1076,12 @@ namespace main_savitch_14{
 
                 if(count6 == 3){
                     isDiagonal4 = true;
+                    if(previous == 1 || previous == 2){
+                        diagonalPerson4 = HUMAN;
+                    }
+                    if(previous == 3 || previous == 4){
+                        diagonalPerson4 = COMPUTER;
+                    }
                 }
                 row++;
                 col--;
@@ -1044,9 +1096,11 @@ namespace main_savitch_14{
         int firstChar;
         int secondChar;
         int thirdChar;
-        if(isColumn == true || isRow == true || isDiagonal == true || isDiagonal2 == true || isDiagonal3 == true || isDiagonal4 == true){
+        if((isColumn == true || isRow == true || isDiagonal == true || isDiagonal2 == true || isDiagonal3 == true || isDiagonal4 == true) && 
+        (columnPerson == next_mover() || rowPerson == next_mover() || diagonalPerson == next_mover() || diagonalPerson2 == next_mover() || diagonalPerson3 == next_mover() || 
+        diagonalPerson4 == next_mover())){
+            display_status();
             do{
-                display_status();
                 cout << "Please enter the pieces you would like to remove in order from TOP to BOTTOM or LEFT to RIGHT, ex:" << endl << endl << 
                 "1a 1b 1c" << endl << endl << "or" << endl << endl << "1a 2a 3a" << endl << endl << "or" << endl << endl << "1a 2b 3c" << endl << endl;
                 getline(cin, input);
@@ -1148,16 +1202,25 @@ namespace main_savitch_14{
     } // end of function
 
     bool Boop::is_game_over() const{
-
         int count = 0;
         int count2 = 0;
+        int count3 = 0;
+        int count4 = 0;
+        int count5 = 0;
+        int count6 = 0;
         int previous = 0;
-        bool is3 = false;
-        bool is32 = false;
+        string input;
+        bool isColumn = false;
+        bool isRow = false;
+        bool isDiagonal = false;
+        bool isDiagonal2 = false;
+        bool isDiagonal3 = false;
+        bool isDiagonal4 = false;
+        bool valid = false;
         
-        for(int column = 0; column < 6; column++){
+        for(int column = 0; column < 6; column++){ // CHECKS COLUMNS
             previous = board[0][column].getTaken();
-            if(previous != 0){
+            if(previous == 2 || previous == 4){
                 count = 1;
             }
             else{
@@ -1167,8 +1230,9 @@ namespace main_savitch_14{
                 switch(previous){
 
                     case 2:
-                        previous = board[s][column].getTaken();
+                    previous = board[s][column].getTaken();
                         switch(previous){
+
                             case 2:
                                 count++;
                                 break;
@@ -1179,7 +1243,7 @@ namespace main_savitch_14{
 
                             default:
                                 count = 0;
-                                break;      
+                                break;
 
                         }
                         break;
@@ -1195,7 +1259,7 @@ namespace main_savitch_14{
                             case 4:
                                 count++;
                                 break;
-
+                            
                             default:
                                 count = 0;
                                 break;
@@ -1205,7 +1269,7 @@ namespace main_savitch_14{
 
                     default:
                         previous = board[s][column].getTaken();
-                        if(board[s][column].getTaken() != 0){
+                        if(board[s][column].getTaken() == 2 || board[s][column].getTaken() == 4){
                             count = 1;
                         }
                         else{
@@ -1215,14 +1279,13 @@ namespace main_savitch_14{
                 }
                 
                 if(count == 3){
-                    cout << "THE CATS" << endl;
-                    return true;
+                    isColumn = true;
                 }
                 
             } // end of inner for loop
         } // end of outer for loop
         
-        for(int row = 0; row < 6; row++){
+        for(int row = 0; row < 6; row++){ // CHECKS ROWS
             previous = board[row][0].getTaken();
             if(previous == 2 || previous == 4){
                 count2 = 1;
@@ -1232,8 +1295,9 @@ namespace main_savitch_14{
             }
             for(int s = 1; s < 6; s++){
                 switch(previous){
+
                     case 2:
-                        previous = board[row][s].getTaken();
+                    previous = board[row][s].getTaken();
                         switch(previous){
 
                             case 2:
@@ -1272,7 +1336,7 @@ namespace main_savitch_14{
                     
                     default:
                         previous = board[row][s].getTaken();
-                        if(board[row][s].getTaken() != 0){
+                        if(board[row][s].getTaken() == 2 || board[row][s].getTaken() == 4){
                             count2 = 1;
                         }
                         else{
@@ -1282,18 +1346,532 @@ namespace main_savitch_14{
 
                 } 
                 if(count2 == 3){
-                    cout << "THE CATS" << endl;
-                    return true;
+                    isRow = true;
                 }
                 
 
             }// end of for loop
         }
 
+        // CHECKS DIAGONALS
+
+        // checking diagonals (*\)
+        int t = 5;
+        int row;
+        int col;
+        for(int i = 0; i < 6; i++){
+            row = i;
+            col = 0;
+            previous = board[row][col].getTaken();
+            if(previous == 2 || previous == 4){
+                count3 = 1;
+            }
+            else{
+                count3 = 0;
+            }
+            for(int j = 0; j < t; j++){
+                
+                switch(previous){
+
+                    case 2:
+                    previous = board[row + 1][col + 1].getTaken();
+                        switch(previous){
+                            case 2:
+                                count3++;
+                                break;
+
+                            case 4:
+                                count3 = 1;
+                                break;
+                            
+                            default:
+                                count3 = 0;
+                                break;
+
+                        }
+                        break;
+
+                    case 4:
+                        previous = board[row + 1][col + 1].getTaken();
+                        switch(previous){
+
+                            case 2:
+                                count3 = 1;
+                                break;
+
+                            case 4:
+                                count3++;
+                                break;
+                            
+                            default:
+                                count3 = 0;
+                                break;
+
+                        }
+                        break;
+                    
+                    default:
+                        previous = board[row + 1][col + 1].getTaken();
+                        if(board[row + 1][col + 1].getTaken() == 2 || board[row + 1][col + 1].getTaken() == 4){
+                            count3 = 1;
+                        }
+                        else{
+                            count3 = 0;
+                        }
+                        break;
+
+                } 
+
+                if(count3 == 3){
+                    isDiagonal = true;
+                }
+                row++;
+                col++;
+            }
+            t--;
+            previous = 0;
+        }
+
+        // checking diagonals (\*)
+        t = 4;
+        for(int i = 1; i < 6; i++){
+            row = 0;
+            col = i;
+            previous = board[row][col].getTaken();
+            if(previous == 2 || previous == 4){
+                count4 = 1;
+            }
+            else{
+                count4 = 0;
+            }
+            for(int j = 0; j < t; j++){
+                switch(previous){
+
+                    case 2:
+                    previous = board[row + 1][col + 1].getTaken();
+                        switch(previous){
+                            case 0:
+                                count4 = 0;
+                                break;
+
+                            case 2:
+                                count4++;
+                                break;
+
+                            case 4:
+                                count4 = 1;
+                                break;
+
+                        }
+                        break;
+                    
+                    case 4:
+                        previous = board[row + 1][col + 1].getTaken();
+                        switch(previous){
+                            case 0:
+                                count4 = 0;
+                                break;
+
+                            case 2:
+                                count4 = 1;
+                                break;
+
+                            case 4:
+                                count4++;
+                                break;
+
+                        }
+                        break;
+
+                    
+                    default:
+                        previous = board[row + 1][col + 1].getTaken();
+                        if(board[row + 1][col + 1].getTaken() == 2 || board[row + 1][col + 1].getTaken() == 4){
+                            count4 = 1;
+                        }
+                        else{
+                            count4 = 0;
+                        }
+                        break;
+
+                } 
+
+                if(count4 == 3){
+                    isDiagonal2 = true;
+                }
+                row++;
+                col++;
+            }
+            t--;
+            previous = 0;
+        }
+
+
+        // CHECKING THE OTHER WAY DIAGONALLY (please kill me lol ik there's a better way to do this)
+        
+        // checking diagonals (*/)
+        t = 5;
+        for(int i = 5; i >= 0; i--){
+            row = i;
+            col = 0;
+            previous = board[row][col].getTaken();
+            if(previous == 2 || previous == 4){
+                count5 = 1;
+            }
+            else{
+                count5 = 0;
+            }
+            for(int j = 0; j < t; j++){
+                switch(previous){
+
+                    case 2:
+                    previous = board[row - 1][col + 1].getTaken();
+                        switch(previous){
+                            case 2:
+                                count5++;
+                                break;
+
+                            case 4:
+                                count5 = 1;
+                                break;
+
+                            default:
+                                count5 = 0;
+                                break;
+
+
+                        }
+                        break;
+                    
+                    case 4:
+                        previous = board[row - 1][col + 1].getTaken();
+                        switch(previous){
+
+                            case 2:
+                                count5 = 1;
+                                break;
+
+                            case 4:
+                                count5++;
+                                break;
+
+                            default:
+                                count5 = 0;
+                                break;
+
+                        }
+                        break;
+
+                    case 0:
+                        previous = board[row - 1][col + 1].getTaken();
+                        if(board[row - 1][col + 1].getTaken() == 2 || board[row - 1][col + 1].getTaken() == 4){
+                            count5 = 1;
+                        }
+                        else{
+                            count5 = 0;
+                        }
+                        break;
+                }
+
+                if(count5 == 3){
+                    isDiagonal3 = true;
+                }
+                row--;
+                col++;
+            }
+            t--;
+            previous = 0;
+        }
+
+
+        // checking diagonals (/*)
+        t = 4;
+        for(int i = 1; i < 6; i++){
+            row = i;
+            col = 5;
+            previous = board[row][col].getTaken();
+            if(previous == 2 || previous == 4){
+                count6 = 1;
+            }
+            else{
+                count6 = 0;
+            }
+            for(int j = 0; j < t; j++){
+                switch(previous){
+
+                    case 2:
+                    previous = board[row + 1][col - 1].getTaken();
+                        switch(previous){
+
+                            case 2:
+                                count6++;
+                                break;
+
+                            case 4:
+                                count6 = 1;
+                                break;
+                            
+                            default:
+                                count6 = 0;
+                                break;
+
+                        }
+                        break;
+
+                    case 4:
+                        previous = board[row + 1][col - 1].getTaken();
+                        switch(previous){
+
+                            case 2:
+                                count6 = 1;
+                                break;
+
+                            case 4:
+                                count6++;
+                                break;
+
+                            default:
+                                count6 = 0;
+                                break;
+
+                        }
+                        break;
+
+                    
+                    default:
+                        previous = board[row + 1][col - 1].getTaken();
+                        if(board[row - 1][col + 1].getTaken() == 2 || board[row - 1][col + 1].getTaken() == 4){
+                            count6 = 1;
+                        }
+                        else{
+                            count6 = 0;
+                        }
+                        break;
+                }
+
+                if(count6 == 3){
+                    isDiagonal4 = true;
+                }
+                row++;
+                col--;
+            }
+            t--;
+            previous = 0;
+        }
+
+        if((isRow == true || isColumn == true || isDiagonal == true || isDiagonal2 == true || isDiagonal3 == true || isDiagonal4 == true)){
+            return true;
+        }
     }
 
-    void Boop::boopThePieces(){
+    // 0 for empty, 1 for p1 kitten, 2 for p1 cat, 3 for p2 kitten, 4 for 2 cat
+    void Boop::boopThePieces(int row, int column){
+        int state = board[row][column].getTaken();
+        if((row - 1 < 6) && (row - 1 >= 0) && (column < 6) && (column >= 0)){ // for the space directly above the placed piece
+            if(!((state == 1 || state == 3) && ((board[row - 1][column].getTaken() == 2 || board[row - 1][column].getTaken() == 4)))){ // if the state is not a cat and it the space is not a kitten
+                if((row - 2 < 6) && (row - 2 >= 0) && (column < 6) && (column >= 0)){
+                    if(board[row - 2][column].getTaken() == 0){
+                        board[row - 2][column].setTaken(board[row - 1][column].getTaken());
+                        board[row - 2][column].setSpace(board[row - 1][column].getRow1(), board[row - 1][column].getRow2(), board[row - 1][column].getRow3());
+                        board[row - 1][column].setTaken(0);
+                        board[row - 1][column].setSpace("       ", "       ", "       ");
+                    }
+                }
+                else{
+                    if(board[row - 1][column].getTaken() == 1){
+                        p1Kittens++;
+                        board[row - 1][column].setTaken(0);
+                        board[row - 1][column].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row - 1][column].getTaken() == 3){
+                        p2Kittens++;
+                        board[row - 1][column].setTaken(0);
+                        board[row - 1][column].setSpace("       ", "       ", "       ");
+                    }
+                }
+            }
+        }
+        
+        if((row + 1 < 6) && (row + 1 >= 0) && (column < 6) && (column >= 0)){ // for the space directly below the placed piece
+            if(!((state == 1 || state == 3) && ((board[row + 1][column].getTaken() == 2 || board[row + 1][column].getTaken() == 4)))){ // if the state is not a cat and it the space is not a kitten
+                if((row + 2 < 6) && (row + 2 >= 0) && (column < 6) && (column >= 0)){
+                    if(board[row + 2][column].getTaken() == 0){
+                        board[row + 2][column].setTaken(board[row + 1][column].getTaken());
+                        board[row + 2][column].setSpace(board[row + 1][column].getRow1(), board[row + 1][column].getRow2(), board[row + 1][column].getRow3());
+                        board[row + 1][column].setTaken(0);
+                        board[row + 1][column].setSpace("       ", "       ", "       ");
+                    }
+                }
+                else{
+                    cout << "got to the else" << endl;
+                    if(board[row + 1][column].getTaken() == 1){
+                        p1Kittens++;
+                        board[row + 1][column].setTaken(0);
+                        board[row + 1][column].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row + 1][column].getTaken() == 3){
+                        p2Kittens++;
+                        board[row + 1][column].setTaken(0);
+                        board[row + 1][column].setSpace("       ", "       ", "       ");
+                    }
+                }
+            }
+        }
+
+        if((row < 6) && (row >= 0) && (column - 1 < 6) && (column - 1 >= 0)){ // for the space directly to the left of the placed piece
+            if(!((state == 1 || state == 3) && ((board[row][column - 1].getTaken() == 2 || board[row][column - 1].getTaken() == 4)))){ // if the state is not a cat and it the space is not a kitten
+                if((row < 6) && (row >= 0) && (column - 2 < 6) && (column - 2 >= 0)){
+                    if(board[row][column - 2].getTaken() == 0){
+                        board[row][column - 2].setTaken(board[row][column - 1].getTaken());
+                        board[row][column - 2].setSpace(board[row][column - 1].getRow1(), board[row][column - 1].getRow2(), board[row][column - 1].getRow3());
+                        board[row][column - 1].setTaken(0);
+                        board[row][column - 1].setSpace("       ", "       ", "       ");
+                    }
+                }
+                else{
+                    if(board[row][column - 1].getTaken() == 1){
+                        p1Kittens++;
+                        board[row][column - 1].setTaken(0);
+                        board[row][column - 1].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row][column - 1].getTaken() == 3){
+                        p2Kittens++;
+                        board[row][column - 1].setTaken(0);
+                        board[row][column - 1].setSpace("       ", "       ", "       ");
+                    }
+                }
+            }
+        }
+
+        if((row < 6) && (row >= 0) && (column + 1 < 6) && (column + 1 >= 0)){ // for the space directly to the right of the placed piece
+            if(!((state == 1 || state == 3) && ((board[row][column + 1].getTaken() == 2 || board[row][column + 1].getTaken() == 4)))){ // if the state is not a cat and it the space is not a kitten
+                if((row < 6) && (row >= 0) && (column + 2 < 6) && (column + 2 >= 0)){
+                    if(board[row][column + 2].getTaken() == 0){
+                        board[row][column + 2].setTaken(board[row][column + 1].getTaken());
+                        board[row][column + 2].setSpace(board[row][column + 1].getRow1(), board[row][column + 1].getRow2(), board[row][column + 1].getRow3());
+                        board[row][column + 1].setTaken(0);
+                        board[row][column + 1].setSpace("       ", "       ", "       ");
+                    }
+                }
+                else{
+                    if(board[row][column + 1].getTaken() == 1){
+                        p1Kittens++;
+                        board[row][column + 1].setTaken(0);
+                        board[row][column + 1].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row][column + 1].getTaken() == 3){
+                        p2Kittens++;
+                        board[row][column + 1].setTaken(0);
+                        board[row][column + 1].setSpace("       ", "       ", "       ");
+                    }
+                }
+            }
+        }
+
+        if((row - 1 < 6) && (row - 1 >= 0) && (column + 1 < 6) && (column + 1 >= 0)){ // for the space directly NE of the placed piece
+            if(!((state == 1 || state == 3) && ((board[row - 1][column + 1].getTaken() == 2 || board[row - 1][column + 1].getTaken() == 4)))){ // if the state is not a cat and it the space is not a kitten
+                if((row - 2 < 6) && (row - 2 >= 0) && (column + 2 < 6) && (column + 2 >= 0)){
+                    if(board[row - 2][column + 2].getTaken() == 0){
+                        board[row - 2][column + 2].setTaken(board[row - 1][column + 1].getTaken());
+                        board[row - 2][column + 2].setSpace(board[row - 1][column + 1].getRow1(), board[row - 1][column + 1].getRow2(), board[row - 1][column + 1].getRow3());
+                        board[row - 1][column + 1].setTaken(0);
+                        board[row - 1][column + 1].setSpace("       ", "       ", "       ");
+                    }
+                }
+                else{
+                    if(board[row - 1][column + 1].getTaken() == 1){
+                        p1Kittens++;
+                        board[row - 1][column + 1].setTaken(0);
+                        board[row - 1][column + 1].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row - 1][column + 1].getTaken() == 3){
+                        p2Kittens++;
+                        board[row - 1][column + 1].setTaken(0);
+                        board[row - 1][column + 1].setSpace("       ", "       ", "       ");
+                    }
+                }
+            }
+        }
+
+        if((row - 1 < 6) && (row - 1 >= 0) && (column - 1 < 6) && (column - 1 >= 0)){ // for the space directly NW of the placed piece
+            if(!((state == 1 || state == 3) && ((board[row - 1][column - 1].getTaken() == 2 || board[row - 1][column - 1].getTaken() == 4)))){ // if the state is not a cat and it the space is not a kitten
+                if((row - 2 < 6) && (row - 2 >= 0) && (column - 2 < 6) && (column - 2 >= 0)){
+                    if(board[row - 2][column - 2].getTaken() == 0){
+                        board[row - 2][column - 2].setTaken(board[row - 1][column - 1].getTaken());
+                        board[row - 2][column - 2].setSpace(board[row - 1][column - 1].getRow1(), board[row - 1][column - 1].getRow2(), board[row - 1][column - 1].getRow3());
+                        board[row - 1][column - 1].setTaken(0);
+                        board[row - 1][column - 1].setSpace("       ", "       ", "       ");
+                    }
+                }
+                else{
+                    if(board[row - 1][column - 1].getTaken() == 1){
+                        p1Kittens++;
+                        board[row - 1][column - 1].setTaken(0);
+                        board[row - 1][column - 1].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row - 1][column - 1].getTaken() == 3){
+                        p2Kittens++;
+                        board[row - 1][column - 1].setTaken(0);
+                        board[row - 1][column - 1].setSpace("       ", "       ", "       ");
+                    }
+                }
+            }
+        }
+
+        if((row + 1 < 6) && (row + 1 >= 0) && (column + 1 < 6) && (column + 1 >= 0)){ // for the space directly SE of the placed piece
+            if(!((state == 1 || state == 3) && ((board[row + 1][column + 1].getTaken() == 2 || board[row + 1][column + 1].getTaken() == 4)))){ // if the state is not a cat and it the space is not a kitten
+                if((row + 2 < 6) && (row + 2 >= 0) && (column + 2 < 6) && (column + 2 >= 0)){
+                    if(board[row + 2][column + 2].getTaken() == 0){
+                        board[row + 2][column + 2].setTaken(board[row + 1][column + 1].getTaken());
+                        board[row + 2][column + 2].setSpace(board[row + 1][column + 1].getRow1(), board[row + 1][column + 1].getRow2(), board[row + 1][column + 1].getRow3());
+                        board[row + 1][column + 1].setTaken(0);
+                        board[row + 1][column + 1].setSpace("       ", "       ", "       ");
+                    }
+                }
+                else{
+                    if(board[row + 1][column + 1].getTaken() == 1){
+                        p1Kittens++;
+                        board[row + 1][column + 1].setTaken(0);
+                        board[row + 1][column + 1].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row + 1][column + 1].getTaken() == 3){
+                        p2Kittens++;
+                        board[row + 1][column + 1].setTaken(0);
+                        board[row + 1][column + 1].setSpace("       ", "       ", "       ");
+                    }
+                }
+            }
+        }
+
+        if((row + 1 < 6) && (row + 1 >= 0) && (column - 1 < 6) && (column - 1 >= 0)){ // for the space directly SW of the placed piece
+            if(!((state == 1 || state == 3) && ((board[row + 1][column - 1].getTaken() == 2 || board[row + 1][column - 1].getTaken() == 4)))){ // if the state is not a cat and it the space is not a kitten
+                if((row + 2 < 6) && (row + 2 >= 0) && (column - 2 < 6) && (column - 2 >= 0)){
+                    if(board[row + 2][column - 2].getTaken() == 0){
+                        board[row + 2][column - 2].setTaken(board[row + 1][column - 1].getTaken());
+                        board[row + 2][column - 2].setSpace(board[row + 1][column - 1].getRow1(), board[row + 1][column - 1].getRow2(), board[row + 1][column - 1].getRow3());
+                        board[row + 1][column - 1].setTaken(0);
+                        board[row + 1][column - 1].setSpace("       ", "       ", "       ");
+                    }
+                }
+                else{
+                    if(board[row + 1][column - 1].getTaken() == 1){
+                        p1Kittens++;
+                        board[row + 1][column - 1].setTaken(0);
+                        board[row + 1][column - 1].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row + 1][column - 1].getTaken() == 3){
+                        p2Kittens++;
+                        board[row + 1][column - 1].setTaken(0);
+                        board[row + 1][column - 1].setSpace("       ", "       ", "       ");
+                    }
+                }
+            }
+        }
         
     }
+
+     game::who Boop::winning( ) const{
+        
+     }
 
 }

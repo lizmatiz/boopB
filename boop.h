@@ -54,24 +54,36 @@ namespace main_savitch_14{
 
                 game* clone( ) const {}
                 void compute_moves(std::queue<std::string>& moves) const {}
-                int evaluate( ) const {}
+                int evaluate( ) const;
                 bool is_game_over( ) const;
 
                 void check();
 
-                void boopThePieces();
+                void boopThePieces(int row, int column);
+
+                game::who winning( ) const;
 
                 
 
             protected:
                 Spaces board[SIZE][SIZE]; // [row][column]
-                int moves; // number of moves
 
                 int p1Kittens; // player 1's kittens
                 int p1Cats; // player 1's cats
 
                 int p2Kittens; // player 2's kittens
                 int p2Cats; // player 2's cats
+
+                int state;
+
+                who columnPerson;
+                who rowPerson;
+                who diagonalPerson;
+                who diagonalPerson2;
+                who diagonalPerson3;
+                who diagonalPerson4;
+
+                who complete;
                 
     };
     
