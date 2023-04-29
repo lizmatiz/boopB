@@ -33,6 +33,8 @@ namespace main_savitch_14{
         diagonalPerson3 = NEUTRAL;
         diagonalPerson4 = NEUTRAL;
 
+        cout << "Please enter your moves in a k1a (place a kitten in space 1a) or c1a (place a cat in space 1a) format." << endl;
+
         game::restart(); // no moves have been made
     }
 
@@ -1764,7 +1766,6 @@ namespace main_savitch_14{
                     }
                 }
                 else{ // if there is not a space on the board to boop it to, it gets knocked off the board
-                    cout << "got to the else" << endl;
                     if(board[row + 1][column].getTaken() == 1){
                         p1Kittens++;
                         board[row + 1][column].setTaken(0);
@@ -1772,6 +1773,16 @@ namespace main_savitch_14{
                     }
                     else if(board[row + 1][column].getTaken() == 3){
                         p2Kittens++;
+                        board[row + 1][column].setTaken(0);
+                        board[row + 1][column].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row + 1][column].getTaken() == 2){
+                        p1Cats++;
+                        board[row + 1][column].setTaken(0);
+                        board[row + 1][column].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row + 1][column].getTaken() == 4){
+                        p2Cats++;
                         board[row + 1][column].setTaken(0);
                         board[row + 1][column].setSpace("       ", "       ", "       ");
                     }
@@ -1800,6 +1811,16 @@ namespace main_savitch_14{
                         board[row][column - 1].setTaken(0);
                         board[row][column - 1].setSpace("       ", "       ", "       ");
                     }
+                    else if(board[row][column - 1].getTaken() == 2){
+                        p1Cats++;
+                        board[row][column - 1].setTaken(0);
+                        board[row][column - 1].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row][column - 1].getTaken() == 4){
+                        p2Cats++;
+                        board[row][column - 1].setTaken(0);
+                        board[row][column - 1].setSpace("       ", "       ", "       ");
+                    }
                 }
             }
         }
@@ -1822,6 +1843,16 @@ namespace main_savitch_14{
                     }
                     else if(board[row][column + 1].getTaken() == 3){
                         p2Kittens++;
+                        board[row][column + 1].setTaken(0);
+                        board[row][column + 1].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row][column + 1].getTaken() == 2){
+                        p1Cats++;
+                        board[row][column + 1].setTaken(0);
+                        board[row][column + 1].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row][column + 1].getTaken() == 4){
+                        p2Cats++;
                         board[row][column + 1].setTaken(0);
                         board[row][column + 1].setSpace("       ", "       ", "       ");
                     }
@@ -1850,6 +1881,16 @@ namespace main_savitch_14{
                         board[row - 1][column + 1].setTaken(0);
                         board[row - 1][column + 1].setSpace("       ", "       ", "       ");
                     }
+                    else if(board[row - 1][column + 1].getTaken() == 2){
+                        p1Cats++;
+                        board[row - 1][column + 1].setTaken(0);
+                        board[row - 1][column + 1].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row - 1][column + 1].getTaken() == 4){
+                        p2Cats++;
+                        board[row - 1][column + 1].setTaken(0);
+                        board[row - 1][column + 1].setSpace("       ", "       ", "       ");
+                    }
                 }
             }
         }
@@ -1872,6 +1913,16 @@ namespace main_savitch_14{
                     }
                     else if(board[row - 1][column - 1].getTaken() == 3){
                         p2Kittens++;
+                        board[row - 1][column - 1].setTaken(0);
+                        board[row - 1][column - 1].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row - 1][column - 1].getTaken() == 2){
+                        p1Cats++;
+                        board[row - 1][column - 1].setTaken(0);
+                        board[row - 1][column - 1].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row - 1][column - 1].getTaken() == 4){
+                        p2Cats++;
                         board[row - 1][column - 1].setTaken(0);
                         board[row - 1][column - 1].setSpace("       ", "       ", "       ");
                     }
@@ -1900,6 +1951,16 @@ namespace main_savitch_14{
                         board[row + 1][column + 1].setTaken(0);
                         board[row + 1][column + 1].setSpace("       ", "       ", "       ");
                     }
+                    else if(board[row + 1][column + 1].getTaken() == 2){
+                        p1Cats++;
+                        board[row + 1][column + 1].setTaken(0);
+                        board[row + 1][column + 1].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row + 1][column + 1].getTaken() == 4){
+                        p2Cats++;
+                        board[row + 1][column + 1].setTaken(0);
+                        board[row + 1][column + 1].setSpace("       ", "       ", "       ");
+                    }
                 }
             }
         }
@@ -1922,6 +1983,16 @@ namespace main_savitch_14{
                     }
                     else if(board[row + 1][column - 1].getTaken() == 3){
                         p2Kittens++;
+                        board[row + 1][column - 1].setTaken(0);
+                        board[row + 1][column - 1].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row + 1][column - 1].getTaken() == 2){
+                        p1Cats++;
+                        board[row + 1][column - 1].setTaken(0);
+                        board[row + 1][column - 1].setSpace("       ", "       ", "       ");
+                    }
+                    else if(board[row + 1][column - 1].getTaken() == 4){
+                        p2Cats++;
                         board[row + 1][column - 1].setTaken(0);
                         board[row + 1][column - 1].setSpace("       ", "       ", "       ");
                     }
