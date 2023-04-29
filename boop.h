@@ -51,17 +51,43 @@ namespace main_savitch_14{
                  * 
                  */
                 void restart( );
-
-                game* clone( ) const {}
-                void compute_moves(std::queue<std::string>& moves) const {}
-                int evaluate( ) const;
+                
+                /**
+                 * @brief Checks to see if anyone has three cats in a row
+                 * 
+                 * @return true 
+                 * @return false 
+                 */
                 bool is_game_over( ) const;
 
+                /**
+                 * @brief Checks to see if a player's any three pieces are in a row. If they are, the user is asked which ones they
+                 * want to remove. It also checks if a user has all their pieces on the board. If they do, they are asked which one they would
+                 * like to remove.
+                 * 
+                 */
                 void check();
 
+                /**
+                 * @brief Checks all the spaces directly next to the places piece to see where they should be booped.
+                 * 
+                 * @param row row of the array
+                 * @param column column of the array
+                 */
                 void boopThePieces(int row, int column);
 
+                /**
+                 * @brief Uses almost the same code from is_game_over, but it keeps track of who's cats are 3 in a row.
+                 * It returns HUMAN, NEUTRAL, or COMPUTER, depending on who is winning
+                 * 
+                 * @return game::who 
+                 */
                 game::who winning( ) const;
+
+                // STUB FUNCTIONS
+                game* clone( ) const {return NULL;}
+                void compute_moves(std::queue<std::string>& moves) const {}
+                int evaluate( ) const{return 0;}
 
                 
 
@@ -74,15 +100,12 @@ namespace main_savitch_14{
                 int p2Kittens; // player 2's kittens
                 int p2Cats; // player 2's cats
 
-                int state;
-
-                who columnPerson;
-                who rowPerson;
+                who columnPerson; // these are all for the winning function when keeping track of
+                who rowPerson; // who's cats are 3 in a row
                 who diagonalPerson;
                 who diagonalPerson2;
                 who diagonalPerson3;
                 who diagonalPerson4;
-
                 who complete;
                 
     };
